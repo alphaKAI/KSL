@@ -1,18 +1,22 @@
 #encoding:utf-8
-if STDIN.gets
-$KSL_HOME_DIRECTORY = "/ROOTFS/KSL"
-require "find"
-require "readline"
-require_relative "./src/parser.rb"
-require_relative "./src/kernel.rb"
-
 =begin
-	Copyleft (C) alphaKAI 2013 http://alpha-kai-net.info
+	Copyright (C) alphaKAI 2013-2014 http://alpha-kai-net.info
 	UNIX Shell Environment KSL in Ruby
 
-	GPLv3 LICENSE http://www.gnu.org/licenses/gpl-3.0.html
+  The MIT LICENSE http://opensource.org/licenses/MIT
 =end
-$ver = "0.0.3 rb"
+
+unless ARGV[0] == "test"
+  $KSL_INSTALLED_PATH = "/ROOTFS/KSL"
+else
+  $KSL_INSTALLED_PATH = "."
+end
+require "find"
+require "readline"
+require_relative "#{$KSL_INSTALLED_PATH}/src/parser.rb"
+require_relative "#{$KSL_INSTALLED_PATH}/src/kernel.rb"
+
+VER = "0.0.3 rb for OSv"
 $install_path = "#{Dir.pwd}/bin"
 $pc_user_color = 36
 class MainFunctions
@@ -22,30 +26,18 @@ class MainFunctions
 		@shellstack = Array.new
 	end
 	def about
-		puts "KSL in Ruby VERSION:#{$ver}"
-		puts "Copyleft (C) alphaKAI 2013 http://alpha-kai-net.info"
-		puts "GPLv3 LICENSE http://www.gnu.org/licenses/gpl-3.0.html"
+		puts "KSL in Ruby VERSION:#{VER}"
+		puts "Copyright (C) alphaKAI 2013-2014 http://alpha-kai-net.info"
+    puts "The MIT LICENSE http://opensource.org/licenses/MIT"
 		puts "実装されているコマンドの一覧はhelpコマンドで確認できます"
 
-		@nos = RbConfig::CONFIG["target_os"]
-		case @nos
-			when /linux/
-				@nos = "Linux"
-			when /mswin(?!ce)|mingw|cygwin|bccwin/
-				@nos = "Windows"
-			when /darwin/
-				@nos = "OS X"
-			when /bsd/
-				@nos = "BSD"
-			else
-				@nos = "Other"
-		end
-		puts "\n現在KSLが動作しているOS:#{@nos}\n\n"
+    @baseOS = "OSv"
+		puts "\n現在KSLが動作しているOS:#{@baseOS}\n\n"
 	end
 	def ShellLine(loop_count,error)
-		path = Dir.pwd
-		pcname = `hostname`.delete("\n")
-		uname = ENV["USER"]
+		path   = Dir.pwd
+    pcname = "OSv"
+		uname  = ENV["USER"]
 
 		if path =~ /\/home\/#{uname}/
 			path.gsub!("/home/#{uname}","~")

@@ -5,12 +5,14 @@
 UNIX Like Shell Envitonment.  
 UNIX風のシェル環境を提供します  
 マルチプラットフォームに対応していますのでどんな環境でも動きます  
-現在はRubyで実装していますが、C言語での実装もそのうちします  
 元々はKaiOSという名称でしたが、紛らわしいので名称を変えました  
 正式名称はKai Shellです  
+これはOSv用のブランチとなっています  
+ライセンスをGPLv3からMITに変更しました  
   
   
 ##機能
+###OSv版(現在公開されてる段階のもの)ではほとんどの機能が実装されていません)
     echo 引数: echoです　リダイレクトなどは未実装  
     cat 引数: catです リダイレクトなどは未実装  
     cd 引数: cdです  
@@ -29,16 +31,15 @@ UNIX風のシェル環境を提供します
   
 ##VERSION
 2013/11/18 KSL 0.0.3 KaiOSより改称  
-  
+2014/7/10  KSL 0.0.3 OSv用に移植及びプラグイン機構の実装を開始  
   
 ##開発環境/動作環境
-Arch Linux 3.11.6-1-ARCH x86_64  
-ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-linux]  
+ ArchLinux 3.15.2-1-ARCH x86_64  
+ruby 2.0.0p353 (2013-11-22 revision 43784) [x86_64-linux]  
   
   
 ##LICENSE  
-GPLv3 LICENSE <http://www.gnu.org/licenses/gpl-3.0.html>  
-  
+The MIT LICENSE <http://opensource.org/licenses/MIT>
   
 ##WEB SITE
 Blog <http://blog.alpha-kai-net.info>  
@@ -48,4 +49,4 @@ Github <https://github.com/alphaKAI>
 Mail to <alpha.kai.net@alpha-kai-net.info>  
   
   
-Copyleft (C) α改 @alpha_kai_NET 2012-2013 http://alha-kai-net.nfo
+Copyright (C) α改 @alpha_kai_NET 2012-214 http://alha-kai-net.nfo
