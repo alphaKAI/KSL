@@ -1,12 +1,4 @@
-#encoding:utf-8
-
-=begin
-	Copyleft (C) alphaKAI 2013 http;//alpha-kai-net.info
-	GPLv3 LICENSE http://www.gnu.org/licenses/gpl-3.0.html
-
-	Base64 encode decode program
-=end
-# DESCRIPTION Base64 encode/decode program Usage:base64 [option]  arguments  more info => base64 -help
+requierments: 
 require "base64"
 require "kconv"
 
@@ -81,4 +73,3 @@ def base64(args)
 			File.write(args[2],Base64.decode64(File.binread(args[1])))
 	end
 end
-base64(ARGV)

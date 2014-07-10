@@ -1,4 +1,6 @@
 #encoding:utf-8
+if STDIN.gets
+$KSL_HOME_DIRECTORY = "/ROOTFS/KSL"
 require "find"
 require "readline"
 require_relative "./src/parser.rb"

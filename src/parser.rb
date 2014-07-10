@@ -30,12 +30,12 @@ class CommandParser
 			when /version/
 				@kernel.version
 			else
-				st=false
+				status =false
 				self.cmdlist.each{|data|
 					if line[0] == data.split(".")[0]
 						line.delete_at(0)
 						system("ruby #{$install_path}/#{data} #{line.join(" ")}")
-						st = true
+						status = true
 						break			
 					end
 				}
@@ -45,7 +45,7 @@ class CommandParser
 				end
 				if File.exist?(line[0].to_s) && File.ftype(line[0].to_s) == "directory"
 					Dir.chdir(line[0])
-					st = true
+					status = true
 				end
 				if line[0] =~ /^\.\D+$/
 					tmp_s = String.new
@@ -55,10 +55,10 @@ class CommandParser
 						tmp_s += " "
 					}
 					if system("#{line[0][1..line[0].size]} #{tmp_s}")
-						st = true
+						status = true
 					end
 				end
-				unless st
+				unless status
 					puts "\'#{line[0]}\'はKSLに対して有効なコマンドではありません" unless line[0].to_s.empty?
 					require_relative "../bin/match.rb"
 					cmdlist.each{|cmd|
@@ -71,11 +71,14 @@ class CommandParser
 		end
 	end
 	def cmdlist
+=begin
 		array = Array.new
 		Dir.entries($install_path).each{|data|
 			next if data == "." || data == ".."
 			array << data
 		}
+=end
+    array = Dir.entries($install_path).select do |elem| elem unless elem == "." || elem == ".." end
 		return array
 	end
 end

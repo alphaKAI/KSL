@@ -43,7 +43,7 @@ class KaiKernel
 	end
 	def version
 		puts "KSL in Ruby VERSION:#{$ver}"
-		puts "Copyleft (C) alphaKAI 2013 http://alpha-kai-net.info"
+		puts "Copyright (C) alphaKAI 2013 http://alpha-kai-net.info"
 	end
 	def date(format = "%Y年 %m月 %d日 %A曜日 %H:%M:%S %Z")
 		date_ = {
@@ -59,4 +59,9 @@ class KaiKernel
 
 		puts Time.now.strftime(format)
 	end
+  def boot
+    if File.exist?("./settings/.kslrc")
+      settingFile = File.read("./settings/.kslrc")
+    end
+  end
 end
