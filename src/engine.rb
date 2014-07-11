@@ -21,13 +21,7 @@ class ShellEngine
 
   def parser(fileData)
     functions = Hash.new
-=begin
-  {"functionName": {
-      "requirements" => [],
-      ""
-    }
-  }
-=end
+
     tmp_functions = {
       "requirements"  => [],
       "runlevel"      => 3,
@@ -55,40 +49,66 @@ class ShellEngine
       if currentStatuses["currentSection"] == nil
         case line
           when /commandName:/
+            puts "Begin commandName"
             currentStatuses["currentSection"] = :commandName
             next
           when /requirements:/
+            puts "Begin requirements"
             currentStatuses["currentSection"] = :requirements
             next
           when /runlevel:/
+            puts "Begin runlevel"
             currentStatuses["currentSection"] = :runlevel
             next
           when /allowedUsers:/
+            puts "Begin allowedUsers"
             currentStatuses["currentSection"] = :allowedUsers
             next
           when /allowedGroups:/
+            puts "Begin allowedGroups"
             currentStatuses["currentSection"] = :allowedGroups
             next
-          when /help/
+          when /help:/
+            puts "Begin help"
             currentStatuses["currentSection"] = :help
             currentStatuses["functionStatus"] = true
             next
           when /function:/
+            puts "Begin function"
             currentStatuses["currentSection"] = :function
             currentStatuses["functionStatus"] = true
             next
-        end
-      end
+        end#End of case
+      end#End of if
 
       if currentStatuses["currentSection"] && line =~ /endOf(commandName|requirements|runlevel|allowedUsers|allowedGroups|help|function);$/
         unless line == "endOf#{currentStatuses["currentSection"]};" 
           puts "Syntax Error : between #{line} - #{currentStatuses["currentSection"]}"
+          puts "cf: Line #{currentStatuses["currentLine"]}"
           exit
-        end
+        end#End of unless
 
+        if currentStatuses["functionStatus"]
+          kindOfFunction = nil
+          if currentStatuses["currentStatuses"] == :function
+            kindOfFunction = "function"
+          else
+            kindOfFunction = "help"
+          end
+
+          func = functionParser(buf_function)
+          if tmp_function_flag
+            tmp_functions[kindOfFunction] = func
+          else
+            functions[currentStatuses["scriptName"]][kindOfFunction] = func
+          end#End of if
+          currentStatuses["functionStatus"] = false
+          buf_function = []
+        end#End of if
         currentStatuses["currentSection"]    = nil
+        puts "close"
         next
-      end
+      end#End of if
       
       case currentStatuses["currentSection"]
         when :commandName
@@ -109,8 +129,8 @@ class ShellEngine
               tmp_functions["requirements"] << elem
             else
               functions[currentStatuses["scriptName"]]["requirements"] << elem
-            end
-          end
+            end#End of if
+          end#End of each
           next
         when :runlevel
           line.gsub!(/(\s|\t)/, "")
@@ -118,7 +138,7 @@ class ShellEngine
             tmp_functions["runlevel"] = line.to_i
           else
             functions[currentStatuses["scriptName"]]["runlevel"] = line.to_i
-          end
+          end#End of if
           next
         when :allowedUsers, :allowedGroups
           mode = nil
@@ -126,8 +146,7 @@ class ShellEngine
             mode = "allowedUsers"
           else
             mode = "allowedGroups"
-            puts mode
-          end
+          end#End of if
 
           line.gsub!(/(\s|\t)/, "")
           
@@ -135,7 +154,7 @@ class ShellEngine
             tmp_array = line.split(",")
           else
             tmp_array = [line]
-          end
+          end#End of if
           
           tmp_array.each do |elem|
             if tmp_function_flag
@@ -145,7 +164,7 @@ class ShellEngine
                 break
               else
                 tmp_functions[mode] << elem
-              end
+              end#End of if
             else
               if elem =~ /all/i
                 functions[currentStatuses["scriptName"]][mode] = [:all]
@@ -153,12 +172,24 @@ class ShellEngine
                 break
               else
                 functions[currentStatuses["scriptName"]][mode] << elem
-              end
-            end
+              end#End of if
+            end#End of if
+          end#End of if
+          next
+        when :help, :function
+          if currentStatuses["functionStatus"]
+            buf_function << line
+          else
+            puts "Error"#ErroMes
           end
           next
-      end
-    end#End of foreach
+      end#End of case
+
+    end#End of each
     return functions
+  end#End of def
+
+  def functionParser(functionStrings)
+    return functionStrings
   end
-end
+end#End of class
