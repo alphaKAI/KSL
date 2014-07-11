@@ -103,6 +103,7 @@ class ShellEngine
           else
             tmp_array = [line]
           end
+       
           tmp_array.each do |elem|
             if tmp_function_flag
               tmp_functions["requirements"] << elem
@@ -112,16 +113,52 @@ class ShellEngine
           end
           next
         when :runlevel
+          line.gsub!(/(\s|\t)/, "")
           if tmp_function_flag
-            tmp_functions["runlevel"] = line.gsub(/(\s|\t)/, "").to_i
+            tmp_functions["runlevel"] = line.to_i
           else
-            functions[currentStatuses["scriptName"]]["runlevel"] = line.gsub(/(\s|\t)/, "").to_i
+            functions[currentStatuses["scriptName"]]["runlevel"] = line.to_i
+          end
+          next
+        when :allowedUsers, :allowedGroups
+          mode = nil
+          if currentStatuses["currentSection"] == :allowedUsers
+            mode = "allowedUsers"
+          else
+            mode = "allowedGroups"
+            puts mode
+          end
+
+          line.gsub!(/(\s|\t)/, "")
+          
+          if line.include?(",")
+            tmp_array = line.split(",")
+          else
+            tmp_array = [line]
+          end
+          
+          tmp_array.each do |elem|
+            if tmp_function_flag
+              if elem =~ /all/i
+                tmp_functions[mode]               = [:all]
+                currentStatuses["currentSection"] = nil
+                break
+              else
+                tmp_functions[mode] << elem
+              end
+            else
+              if elem =~ /all/i
+                functions[currentStatuses["scriptName"]][mode] = [:all]
+                currentStatuses["currentSection"]              = nil
+                break
+              else
+                functions[currentStatuses["scriptName"]][mode] << elem
+              end
+            end
           end
           next
       end
-
-    end
-    
+    end#End of foreach
     return functions
   end
 end
