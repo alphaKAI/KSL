@@ -88,9 +88,10 @@ class ShellEngine
           exit
         end#End of unless
 
-        if currentStatuses["functionStatus"]
+        #For functions
+        if currentStatuses["functionStatus"] && line =~ /endOf(help|function);/
           kindOfFunction = nil
-          if currentStatuses["currentStatuses"] == :function
+          if currentStatuses["currentSection"] == :function
             kindOfFunction = "function"
           else
             kindOfFunction = "help"
@@ -105,6 +106,7 @@ class ShellEngine
           currentStatuses["functionStatus"] = false
           buf_function = []
         end#End of if
+        
         currentStatuses["currentSection"]    = nil
         puts "close"
         next
