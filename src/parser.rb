@@ -33,8 +33,27 @@ class CommandParser
 				status =false
 				self.cmdlist.each{|data|
 					if line[0] == data.split(".")[0]
+            fname = line[0]
 						line.delete_at(0)
-						system("ruby #{$install_path}/#{data} #{line.join(" ")}")
+            if line.length == 0
+              line = ""
+            end
+            
+            fileData = []
+            commentOut = false
+            File.read($install_path + "/" + data).split("\n").each do |fline| 
+              next if fline =~ /^#.*$/
+              commentOut = true  if fline =~ /=begin/
+              if commentOut && fline =~ /=end/
+                commentOut = false
+                next
+              end
+              next if commentOut
+              fileData << fline
+            end 
+            eval("#{fileData.join(";")}")
+            eval("#{fname} #{line}")
+            eval("undef #{fname}")
 						status = true
 						break			
 					end

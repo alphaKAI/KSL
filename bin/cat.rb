@@ -19,4 +19,3 @@ def cat(args)
 		}
 	}
 end
-cat(ARGV)

@@ -35,4 +35,3 @@ def ls(arg)
 		print "\n" if ln
 	}
 end
-ls(ARGV)

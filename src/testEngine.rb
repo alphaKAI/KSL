@@ -3,3 +3,4 @@ require_relative "./engine.rb"
 sh = ShellEngine.new
 
 p sh.parser(File.read("../bin/base64.ksl"))
+p sh.execFunction("base64")

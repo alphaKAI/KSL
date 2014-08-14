@@ -194,4 +194,8 @@ class ShellEngine
   def functionParser(functionStrings)
     return functionStrings
   end
+
+  def execFunction(functionName)
+    eval(@functions[functionName]["function"])
+  end
 end#End of class

@@ -6,11 +6,11 @@
   The MIT LICENSE http://opensource.org/licenses/MIT
 =end
 
-unless ARGV[0] == "test"
-  $KSL_INSTALLED_PATH = "/ROOTFS/KSL"
-else
+#unless ARGV[0] == "test"
+#  $KSL_INSTALLED_PATH = "/ROOTFS/KSL"
+#else
   $KSL_INSTALLED_PATH = "."
-end
+#end
 require "find"
 require "readline"
 require_relative "#{$KSL_INSTALLED_PATH}/src/parser.rb"

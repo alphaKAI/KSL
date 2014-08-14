@@ -25,6 +25,7 @@ def match(str,pattern)
 	 
 	return count
 end
+=begin
 if __FILE__ == $0
 	string = ARGV[0].to_s
 	pattern = ARGV[1].to_s
@@ -44,3 +45,4 @@ if __FILE__ == $0
 	end
 	print " Pattern:#{pattern}\n"
 end
+=end
