@@ -9,6 +9,7 @@
 # DESCRIPTION Like UNIX ls Usage: ls Directory or option option: -a :show all
 
 def ls(arg)
+
 	if arg[0] =~ /-.*a/
 		tmp = arg[0]
 		arg[0] = arg[1]

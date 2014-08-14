@@ -66,11 +66,45 @@ class MainFunctions
 	end
 end
 
-i=0
-error=0
+userHash = {
+  "root"     => -1,
+  "alphaKAI" =>  0,
+  "user"     =>  1
+}
+break_flag = false
+id = nil
+userName = nil
+loop do
+  print "UserName: "
+  input_name = STDIN.gets.chomp
+  puts
+
+  id = userHash[input_name]
+  if id == nil
+    puts "Login failed"
+  else
+    userName = input_name
+    break
+  end
+  break if break_flag
+end
+
+i = 0
+error = 0
+
 @mf = MainFunctions.new
 @mf.about
-loop do
-	error=@mf.ShellLine(i,error)
-	i+=1
+loopThread = Thread.new do
+  # set id
+  loopThread.access_control_id = id
+  loop do
+#    begin 
+      error = @mf.ShellLine(i, error)
+#    rescue 
+ #     puts "Permisson error"
+ #   ensure
+      i+=1
+ #   end
+  end
 end
+loopThread.join

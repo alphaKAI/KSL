@@ -36,7 +36,7 @@ class CommandParser
             fname = line[0]
 						line.delete_at(0)
             if line.length == 0
-              line = ""
+              line = []
             end
             
             fileData = []
