@@ -11,6 +11,7 @@ class KaiKernel
 	def help
 		inside_funcs={
 		 "help" => "Show Command List",
+                 "logout" => "Logout user",
 		 "exit" => "Exit KSL",
 		 "cd" => "Like UNIX cd Usage:cd Directory Name",
 		 "date" => "Show now date. You can change format. Usage: date option[format]",

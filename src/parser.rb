@@ -11,6 +11,8 @@ class CommandParser
 			line[i].gsub!("~/","/home/#{ENV["USER"]}/")	if line[i] =~ /~\//
 		}
 		case line[0]
+                        when /logout/
+                                return 1
 			when /help/
 				@kernel.help
 			when /exit/
@@ -84,6 +86,7 @@ class CommandParser
 					}
 				end
 		end
+                return 0
 	end
 	def cmdlist
 =begin
