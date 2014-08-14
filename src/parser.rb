@@ -62,10 +62,6 @@ class CommandParser
 				if line[0] == ".."
 					line[0] += "/"
 				end
-				if File.exist?(line[0].to_s) && File.ftype(line[0].to_s) == "directory"
-					Dir.chdir(line[0])
-					status = true
-				end
 				if line[0] =~ /^\.\D+$/
 					tmp_s = String.new
 					(line.size - 1) .times{|i|
