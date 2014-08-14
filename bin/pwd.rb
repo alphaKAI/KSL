@@ -8,6 +8,6 @@
 	DevTest
 =end
 # DESCRIPTION Like UNIX pwd Usage:pwd
-def pwd
+def pwd(args)
 	puts Dir.pwd
 end

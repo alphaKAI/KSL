@@ -26,11 +26,6 @@ def ls(arg)
 		else
 			ln = true
 		end
-		if File.ftype(dir) == "directory"
-			dir += "/"
-			dir_ = 1
-			dir_2 = 34
-		end
 
 		print "\e[#{dir_}m\e[#{dir_2}m#{dir}\e[0m "
 		print "\n" if ln

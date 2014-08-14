@@ -11,6 +11,8 @@ class CommandParser
 			line[i].gsub!("~/","/home/#{ENV["USER"]}/")	if line[i] =~ /~\//
 		}
 		case line[0]
+                        when /logout/
+                                return 1
 			when /help/
 				@kernel.help
 			when /exit/
@@ -62,10 +64,6 @@ class CommandParser
 				if line[0] == ".."
 					line[0] += "/"
 				end
-				if File.exist?(line[0].to_s) && File.ftype(line[0].to_s) == "directory"
-					Dir.chdir(line[0])
-					status = true
-				end
 				if line[0] =~ /^\.\D+$/
 					tmp_s = String.new
 					(line.size - 1) .times{|i|
@@ -79,7 +77,7 @@ class CommandParser
 				end
 				unless status
 					puts "\'#{line[0]}\'はKSLに対して有効なコマンドではありません" unless line[0].to_s.empty?
-					require_relative "../bin/match.rb"
+					require_relative "./match.rb"
 					cmdlist.each{|cmd|
 						cmd = cmd.split(".")[0]
 						if 1 <= match(cmd,line[0]) || 1 <= match(line[0].to_s,cmd)
@@ -88,6 +86,7 @@ class CommandParser
 					}
 				end
 		end
+                return 0
 	end
 	def cmdlist
 =begin

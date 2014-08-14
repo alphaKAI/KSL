@@ -59,10 +59,11 @@ class MainFunctions
 			commands.grep(/\A#{Regexp.quote word}/)
 		}
 		input = Readline.readline("\r\e[#{$pc_user_color}m#{uname}@#{pcname} \e[31m[KSL]\e[0m \e[1m#{path}\e[0m #{@kernel.prompt}",true)
-
+                
 		@shellstack << input
-		@parser.parser(input)
+		ret = @parser.parser(input)
 		puts ""
+                ret
 	end
 end
 
@@ -71,40 +72,43 @@ userHash = {
   "alphaKAI" =>  0,
   "user"     =>  1
 }
-break_flag = false
-id = nil
-userName = nil
 loop do
-  print "UserName: "
-  input_name = STDIN.gets.chomp
-  puts
-
-  id = userHash[input_name]
-  if id == nil
-    puts "Login failed"
-  else
-    userName = input_name
-    break
-  end
-  break if break_flag
-end
-
-i = 0
-error = 0
-
-@mf = MainFunctions.new
-@mf.about
-loopThread = Thread.new do
-  # set id
-  loopThread.access_control_id = id
+  id = nil
+  userName = nil
   loop do
-#    begin 
-      error = @mf.ShellLine(i, error)
-#    rescue 
- #     puts "Permisson error"
- #   ensure
-      i+=1
- #   end
+    print "UserName: "
+    input_name = STDIN.gets.chomp
+    puts
+
+    id = userHash[input_name]
+    if id == nil
+      puts "Login failed"
+    else
+      userName = input_name
+      break
+    end
   end
+
+  i = 0
+  error = 0
+
+  @mf = MainFunctions.new
+  @mf.about
+  loopThread = Thread.new do
+    # set id
+    loopThread.access_control_id = id
+    loop do
+      begin
+        ret = @mf.ShellLine(i, error)
+        if ret == 1
+            break
+        end
+      rescue => e
+       puts "Permisson error:#{e}"
+      ensure
+        i+=1
+      end
+    end
+  end
+  loopThread.join
 end
-loopThread.join
