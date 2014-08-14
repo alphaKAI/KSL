@@ -79,7 +79,7 @@ class CommandParser
 				end
 				unless status
 					puts "\'#{line[0]}\'はKSLに対して有効なコマンドではありません" unless line[0].to_s.empty?
-					require_relative "../bin/match.rb"
+					require_relative "./match.rb"
 					cmdlist.each{|cmd|
 						cmd = cmd.split(".")[0]
 						if 1 <= match(cmd,line[0]) || 1 <= match(line[0].to_s,cmd)
