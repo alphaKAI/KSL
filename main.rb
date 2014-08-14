@@ -98,13 +98,13 @@ loopThread = Thread.new do
   # set id
   loopThread.access_control_id = id
   loop do
-#    begin 
+    begin
       error = @mf.ShellLine(i, error)
-#    rescue 
- #     puts "Permisson error"
- #   ensure
+    rescue => e
+     puts "Permisson error:#{e}"
+    ensure
       i+=1
- #   end
+    end
   end
 end
 loopThread.join
