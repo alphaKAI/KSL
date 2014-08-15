@@ -13,6 +13,7 @@
 #end
 require "find"
 require "readline"
+require "digest/md5"
 require_relative "#{$KSL_INSTALLED_PATH}/src/parser.rb"
 require_relative "#{$KSL_INSTALLED_PATH}/src/kernel.rb"
 
@@ -68,25 +69,48 @@ class MainFunctions
 end
 
 userHash = {
-  "root"     => -1,
-  "alphaKAI" =>  0,
-  "user"     =>  1
+  "root"     => {
+    "id"     => -1,
+    "passwd" =>"84ed897d5e74b841d03a6c52dec0d311"
+  },
+  "alphaKAI" => {
+    "id"     => 0,
+    "passwd" => "73bb3253f355e9f0325b4b0b373d27ba"
+  },
+  "user"     => {
+    "id"     => 1,
+    "passwd" => "329435e5e66be809a656af105f42401e"
+  }
 }
 loop do
   id = nil
-  userName = nil
+  username = nil
   loop do
     print "UserName: "
     input_name = STDIN.gets.chomp
     puts
 
-    id = userHash[input_name]
+    if input_name.empty? || userHash[input_name] == nil
+      puts "Login failed"
+      next
+    end
+
+    id = userHash[input_name]["id"]
     if id == nil
       puts "Login failed"
     else
-      userName = input_name
-      break
+      print "Password: "
+      input_passwd = STDIN.gets.chomp
+      puts
+
+      if userHash[input_name]["passwd"] == Digest::MD5.hexdigest(input_passwd)
+        break_flag = true
+        username = input_name
+      else
+        puts "Login failed"
+      end
     end
+    break if break_flag
   end
 
   i = 0
