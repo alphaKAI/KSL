@@ -64,14 +64,17 @@ class CommandParser
 				if line[0] == ".."
 					line[0] += "/"
 				end
-				if line[0] =~ /^\.\D+$/
+        if line[0] =~ /^\..*$/
 					tmp_s = String.new
 					(line.size - 1) .times{|i|
 						i += 1
 						tmp_s += line[i]
 						tmp_s += " "
 					}
-					if system("#{line[0][1..line[0].size]} #{tmp_s}")
+
+	#				if system("#{line[0][1..line[0].size]} #{tmp_s}")
+					if eval("#{line[0][1..line[0].size]} #{tmp_s}")
+          #if eval(line[0][1..line[0].size] + tmp_s)
 						status = true
 					end
 				end
