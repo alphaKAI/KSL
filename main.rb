@@ -1,6 +1,7 @@
 #encoding:utf-8
 require "find"
 require "readline"
+require "socket"
 require_relative "./src/parser.rb"
 require_relative "./src/kernel.rb"
 
@@ -42,12 +43,14 @@ class MainFunctions
 	end
 	def ShellLine(loop_count,error)
 		path = Dir.pwd
-		pcname = `hostname`.delete("\n")
+    pcname = Socket.gethostname
 		uname = ENV["USER"]
 
-		if path =~ /\/home\/#{uname}/
-			path.gsub!("/home/#{uname}","~")
-		end
+    unless @nos == "Windows" || @nos == "Other"
+      if path =~ /\/home\/#{uname}/
+        path.gsub!("/home/#{uname}","~")
+      end
+    end
 		unless error == 0
 			print "#{error} "
 		end
